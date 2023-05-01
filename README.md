@@ -60,7 +60,7 @@ Open Home Assistant and go to the Supervisor tab.
 * Click on edit Add the configuration settings for your device, such as the type of sensor you want to use and any other customizations you want to make.
 Thanks for the code Wilbert Verhoeff, i did alter it and added MQTT
 
-SEE THE YAML IN THIS REPO!
+Check the yaml [here](https://github.com/malosaa/Growatt_Shine-S_HASS_Mod/blob/main/growatt.yaml) this is the code to upload.
 
 * Once you have added all the necessary configuration settings, click on "Save" to save your configuration.
 
