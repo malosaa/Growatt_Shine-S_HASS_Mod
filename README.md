@@ -111,7 +111,11 @@ After that press on open ESPHOME and follow the instructions, it lets u upload t
 
 ![image](https://user-images.githubusercontent.com/13116501/235464597-756dcac9-064d-4c70-945d-ff40f80bc2ad.png)
 
+### Improvement.
+*  commented out the slider, and added a selector.
 
+
+![image](https://user-images.githubusercontent.com/13116501/235500066-eb1f508b-a4d5-4f01-8127-21ee54ba6642.png)
 
 
 You can always edit the code when pressing edit and when done install and you select wireless, and it will go OTA:)
