@@ -6,6 +6,15 @@ substitutions:
   friendly_name: "Growatt Inverter"
   publish_interval: 5s
   update_realtime: 5s
+ 
+ # Interval in seconds
+  interval0: "1s"
+  interval1: "5s"
+  interval2: "10s"
+  interval3: "20s"
+  interval4: "30s"
+  interval5: "60s"
+ 
 esphome:
   name: ${device_name}
   platform: ESP8266
@@ -16,7 +25,6 @@ logger:
   baud_rate: 0
 # Enable Home Assistant API
 api:
-
 
 # Mqtt
 mqtt:
@@ -93,26 +101,42 @@ modbus_controller:
     update_interval: ${update_realtime}  # use the substitution variable for the update interval
     setup_priority: -10  
 
-button:
-  - platform: restart
-    name: "${device_name} Restart"
-
 # Define input number for the update interval
-number:
+# number:
+#  - platform: template
+#    name: "Update Interval slider"
+#    id: modbus_interval
+#    optimistic: true
+#    min_value: 1
+#    max_value: 60
+#    restore_value: true
+#    step: 1
+#    initial_value: 10  # set the initial value to match your update_realtime substitution
+#    on_value:
+#      then:
+#        - lambda: |-
+#            id(growatt).set_update_interval(id(modbus_interval).state * 1000);
+            
+
+select:
   - platform: template
-    name: "Modbus Update Interval"
-    id: modbus_interval
+    id: modbus_interval_select
+    name: "Update interval seconds"
+    icon: mdi:update
     optimistic: true
-    min_value: 1
-    max_value: 60
     restore_value: true
-    step: 1
-    initial_value: 10  # set the initial value to match your update_realtime substitution
+    initial_option: $interval2
+    options:
+      - $interval0
+      - $interval1
+      - $interval2
+      - $interval3
+      - $interval4
     on_value:
       then:
         - lambda: |-
-            id(growatt).set_update_interval(id(modbus_interval).state * 1000);
-
+            int interval_ms = std::stoi(id(modbus_interval_select).state) * 1000;
+            id(growatt).set_update_interval(interval_ms);
 sensor:
   # - platform: modbus_controller
   #   name: "${friendly_name} DcPower"
