@@ -109,7 +109,7 @@ interval:
 
 
 ota:
-  password: "010366"
+  password: "000000"
 
 wifi:
   ssid: "YOURSSID"
