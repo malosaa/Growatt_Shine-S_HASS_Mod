@@ -98,15 +98,24 @@ After that press on open ESPHOME and follow the instructions, it lets u upload t
 
 
 
-* You can always edit the code when pressing edit and when done install and you select wireless, and it will go OTA:)
+
+
+
+
+# UPDATE 01-05-2023
+
+* Added a slider in the GUI to select the update limit.
+* Added a reboot button in the GUI so when u press that it reboots the device after setting up the update limit.
+
+
+
+![image](https://user-images.githubusercontent.com/13116501/235464597-756dcac9-064d-4c70-945d-ff40f80bc2ad.png)
+
+
+
+
+You can always edit the code when pressing edit and when done install and you select wireless, and it will go OTA:)
 Have fun
-
-
-
-
-
-
-
 
 
 
