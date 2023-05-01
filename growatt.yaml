@@ -1,0 +1,263 @@
+# credits for piece of the code @WilbertV on HomeAssistant
+# code merged and edited by @Malosaa HomeAssistant 
+
+substitutions:
+  device_name: growatt
+  friendly_name: "Growatt Inverter"
+  publish_interval: 5s
+esphome:
+  name: ${device_name}
+  platform: ESP8266
+  board: esp07s  
+  
+# Enable logging
+logger:
+  baud_rate: 0
+# Enable Home Assistant API
+api:
+
+
+# Mqtt
+mqtt:
+  broker: MQTTURL
+  username: "NAME"
+  password: "PASS"
+  birth_message:
+    topic: sensor/${friendly_name}/status
+    payload: online
+  will_message:
+    topic: sensor/${friendly_name}/status
+    payload: offline
+
+interval:
+  - interval: ${publish_interval}
+    then:
+        - wait_until:
+            mqtt.connected:
+        - mqtt.publish_json:
+            topic: "sensor/${friendly_name}/data"
+            payload:
+              root["Pv1Power"] = id(Pv1Power).state;
+              
+        - logger.log: "MQTT Data published"
+
+
+
+ota:
+  password: "000000"
+
+wifi:
+  ssid: "YOURSSID"
+  password: "YOURPASS"
+
+captive_portal:
+
+
+
+web_server:
+  port: 80
+
+time:
+  - platform: homeassistant
+    id: homeassistant_time
+
+output:
+# Blue Led
+  - id: light_bl
+    platform: gpio
+    pin: 16
+# Green Led
+  - id: light_gr
+    platform: gpio
+    pin: 0
+# Red Led
+  - id: light_rd
+    platform: gpio
+    pin: 2
+    
+uart:
+  id: mod_bus
+  tx_pin: 1
+  rx_pin: 3
+  baud_rate: 9600
+
+modbus:
+  id: modbus1
+  uart_id: mod_bus
+
+modbus_controller:
+  - id: growatt
+    address: 0x1
+    modbus_id: modbus1
+    update_interval: 5s
+    setup_priority: -10  
+
+
+
+sensor:
+  # - platform: modbus_controller
+  #   name: "${friendly_name} DcPower"
+  #   address: 1
+  #   register_type: "read"
+  #   unit_of_measurement: W
+  #   device_class: power
+  #   entity_category: diagnostic
+  #   disabled_by_default: true
+  #   icon: mdi:flash
+  #   value_type: U_DWORD
+  #   accuracy_decimals: 1
+  #   filters:
+  #   - multiply: 0.1
+    
+  # - platform: modbus_controller
+  #   name: "${friendly_name} DcVoltage"
+  #   address: 3
+  #   register_type: "read"
+  #   unit_of_measurement: V
+  #   device_class: voltage
+  #   entity_category: diagnostic
+  #   disabled_by_default: true
+  #   icon: mdi:flash
+  #   value_type: U_WORD
+  #   accuracy_decimals: 1
+  #   filters:
+  #   - multiply: 0.1
+    
+  # - platform: modbus_controller
+  #   name: "${friendly_name} DcInputCurrent"
+  #   address: 4
+  #   register_type: "read"
+  #   unit_of_measurement: A
+  #   device_class: current
+  #   entity_category: diagnostic
+  #   disabled_by_default: true
+  #   icon: mdi:flash
+  #   value_type: U_WORD
+  #   accuracy_decimals: 1
+  #   filters:
+  #   - multiply: 0.1
+    
+  # - platform: modbus_controller
+  #   name: "${friendly_name} AcFrequency"
+  #   address: 13
+  #   register_type: "read"
+  #   unit_of_measurement: Hz
+  #   entity_category: diagnostic
+  #   disabled_by_default: true
+  #   icon: mdi:flash
+  #   value_type: U_WORD
+  #   accuracy_decimals: 1
+  #   filters:
+  #   - multiply: 0.01
+  
+  # - platform: modbus_controller
+  #   name: "${friendly_name} AcVoltage"
+  #   address: 14
+  #   register_type: "read"
+  #   unit_of_measurement: V
+  #   device_class: voltage
+  #   entity_category: diagnostic
+  #   disabled_by_default: true
+  #   icon: mdi:flash
+  #   value_type: U_WORD
+  #   accuracy_decimals: 1
+  #   filters:
+  #   - multiply: 0.1
+  
+  # - platform: modbus_controller
+  #   name: "${friendly_name} AcOutputCurrent"
+  #   address: 15
+  #   register_type: "read"
+  #   unit_of_measurement: A
+  #   device_class: current
+  #   entity_category: diagnostic
+  #   icon: mdi:flash
+  #   value_type: U_WORD
+  #   accuracy_decimals: 1
+  #   filters:
+  #   - multiply: 0.1
+
+  - platform: wifi_signal
+    name: "WiFi Signal Sensor"
+    update_interval: 60s 
+ 
+  - platform: modbus_controller
+    address: 0
+    register_type: "read"
+    internal: true
+    accuracy_decimals: 0
+    id: status
+     
+  - platform: modbus_controller
+    name: "${friendly_name} Pv1 Power"
+    id: Pv1Power
+    address: 5
+    register_type: "read"
+    unit_of_measurement: W
+    device_class: power
+    icon: mdi:flash
+    value_type: U_DWORD
+    accuracy_decimals: 1
+    filters:
+    - multiply: 0.1
+
+  - platform: modbus_controller
+    name: "${friendly_name} Pv2 Power"
+    address: 9
+    register_type: "read"
+    unit_of_measurement: W
+    device_class: power
+    icon: mdi:flash
+    value_type: U_DWORD
+    accuracy_decimals: 1
+    filters:
+    - multiply: 0.1
+
+  - platform: modbus_controller
+    name: "${friendly_name} AcPower"
+    address: 16
+    register_type: "read"
+    unit_of_measurement: W
+    device_class: power
+    state_class: measurement
+    icon: mdi:solar-power
+    value_type: U_DWORD
+    accuracy_decimals: 1
+    filters:
+    - multiply: 0.1
+
+  - platform: modbus_controller
+    name: "${friendly_name} EnergyToday"
+    address: 26
+    register_type: "read"
+    unit_of_measurement: kWh
+    device_class: energy
+    icon: mdi:solar-power
+    value_type: U_DWORD
+    accuracy_decimals: 1
+    filters:
+    - multiply: 0.1
+
+  - platform: modbus_controller
+    name: "${friendly_name} EnergyTotal"
+    address: 28
+    register_type: "read"
+    unit_of_measurement: kWh
+    state_class: total_increasing
+    device_class: energy
+    icon: mdi:solar-power
+    value_type: U_DWORD
+    accuracy_decimals: 1
+    filters:
+    - multiply: 0.1
+
+  - platform: modbus_controller
+    name: "${friendly_name} Temperature"
+    address: 32
+    register_type: "read"
+    unit_of_measurement: C
+    icon: mdi:thermometer
+    value_type: U_WORD
+    accuracy_decimals: 1
+    filters:
+    - multiply: 0.1
