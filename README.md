@@ -18,7 +18,7 @@ Be sure when u did flash it with this bin file just reset the SHINE-S
 
 ### First things first
 
-Initial loding of Firmware to the stick is rather easy:
+Initial loading of Firmware to the stick is rather easy:
 
 Remove the stick's PCB from the housing. 
 You need some power supply for the module while programming, e.g. if you use an USB-serial module that can supply the 3.3V while programming.
