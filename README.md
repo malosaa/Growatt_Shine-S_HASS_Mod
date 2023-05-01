@@ -26,12 +26,16 @@ You need some power supply for the module while programming, e.g. if you use an 
 
 ### How to put the SHINE-S in bootmode?:
 
+ 
+
+
 * You'll need to power the module while programming. If you're using a USB-serial module that can supply 3.3V while programming, connect it as follows:
 * Connect the RX pin from your flasher to the TX pin of your SHINE-S.
 * Connect the TX pin from your flasher to the RX pin of your SHINE-S.
 * Connect the GND pin from your flasher to the GND pin of your SHINE-S.
 * Extend the GND cable with a piece of metal pin as the GND cable also needs to be in GPIO1.
 * Connect the VIM pin of your flasher to the 3v pin of your SHINE-S.
+![image](https://user-images.githubusercontent.com/13116501/235501727-4d8e2f98-35de-4799-899b-df8f3dbfb68c.png)
 
 ### Installing ESPhome in homeassistant
 
