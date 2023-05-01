@@ -5,6 +5,7 @@ substitutions:
   device_name: growatt
   friendly_name: "Growatt Inverter"
   publish_interval: 5s
+  update_realtime: 5s
 esphome:
   name: ${device_name}
   platform: ESP8266
@@ -89,10 +90,28 @@ modbus_controller:
   - id: growatt
     address: 0x1
     modbus_id: modbus1
-    update_interval: 5s
+    update_interval: ${update_realtime}  # use the substitution variable for the update interval
     setup_priority: -10  
 
+button:
+  - platform: restart
+    name: "${device_name} Restart"
 
+# Define input number for the update interval
+number:
+  - platform: template
+    name: "Modbus Update Interval"
+    id: modbus_interval
+    optimistic: true
+    min_value: 1
+    max_value: 60
+    restore_value: true
+    step: 1
+    initial_value: 10  # set the initial value to match your update_realtime substitution
+    on_value:
+      then:
+        - lambda: |-
+            id(growatt).set_update_interval(id(modbus_interval).state * 1000);
 
 sensor:
   # - platform: modbus_controller
