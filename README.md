@@ -104,8 +104,8 @@ After that press on open ESPHOME and follow the instructions, it lets u upload t
 
 # UPDATE 01-05-2023
 
-* Added a slider in the GUI to select the update limit.
-* Added a reboot button in the GUI so when u press that it reboots the device after setting up the update limit.
+* Added a slider in the GUI to select the update interval.
+* Added a reboot button in the GUI so when u press that it reboots the device after setting up the update interval.
 
 
 
