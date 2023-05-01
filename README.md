@@ -2,6 +2,9 @@
 Firmware replacement for Growatt ShineWiFi-S (serial), ShineWiFi-X (USB) or custom build sticks (ESP8266/ESP32).
 FW.bin is only for factory reset!
 
+Everything has been 100% tested with my SHINE-S, for the SHINE-X i could not test. 
+I'm not responsible for any damages.
+
 
 
 
