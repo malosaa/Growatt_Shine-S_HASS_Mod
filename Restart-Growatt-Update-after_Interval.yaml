@@ -1,4 +1,3 @@
-'''
 alias: Restart Growatt | After update interval change.
 description: Restart Growatt after changing the update interval
 trigger:
@@ -12,4 +11,4 @@ action:
     target:
       entity_id: button.growatt_restart
 mode: single
-'''
+
