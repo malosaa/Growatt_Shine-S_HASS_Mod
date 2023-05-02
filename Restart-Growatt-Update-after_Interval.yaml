@@ -1,0 +1,15 @@
+'''
+alias: Restart Growatt | After update interval change.
+description: Restart Growatt after changing the update interval
+trigger:
+  - platform: state
+    entity_id:
+      - select.update_interval_seconds
+condition: []
+action:
+  - service: button.press
+    data: {}
+    target:
+      entity_id: button.growatt_restart
+mode: single
+'''
