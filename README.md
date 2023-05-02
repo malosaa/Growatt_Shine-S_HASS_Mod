@@ -126,7 +126,9 @@ You can always edit the code when pressing edit and when done install and you se
 Have fun
 
 
+# UPDATE 02-05-2023
 
+* Added a automation (in this repo) for homeassistant when u change the interval so it restarts the Shine-S and sets the correct interval..
 
 
 
