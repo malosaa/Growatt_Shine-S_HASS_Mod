@@ -101,6 +101,11 @@ modbus_controller:
     update_interval: ${update_realtime}  # use the substitution variable for the update interval
     setup_priority: -10  
 
+button:
+  - platform: restart
+    name: "${device_name} Restart"
+    
+    
 # Define input number for the update interval
 # number:
 #  - platform: template
