@@ -131,6 +131,10 @@ Have fun
 * Added a automation (in this repo) for homeassistant when u change the interval so it restarts the Shine-S and sets the correct interval..
 
 
+# UPDATE 03-05-2023
+
+* Added a auto restart after chainging the interval setting, see the updated yaml.
+* no need for an automation, its removed now from the repo.
 
 
 
