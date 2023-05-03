@@ -7,13 +7,20 @@ substitutions:
   publish_interval: 5s
   update_realtime: 5s
  
+ 
  # Interval in seconds
-  interval0: "1s"
-  interval1: "5s"
-  interval2: "10s"
-  interval3: "20s"
-  interval4: "30s"
-  interval5: "60s"
+  interval0: "1"
+  interval1: "5"
+  interval2: "10"
+  interval3: "20"
+  interval4: "30"
+  interval5: "60"
+
+globals:
+  - id: last_selected_interval
+    type: int
+    restore_value: true
+    initial_value: "5"
  
 esphome:
   name: ${device_name}
@@ -139,9 +146,32 @@ select:
       - $interval4
     on_value:
       then:
+        - globals.set:
+            id: last_selected_interval
+            value: !lambda 'return std::stoi(x);'
+        - wait_until:
+            condition:
+              lambda: 'return id(last_selected_interval) == std::stoi(x);'
         - lambda: |-
-            int interval_ms = std::stoi(id(modbus_interval_select).state) * 1000;
-            id(growatt).set_update_interval(interval_ms);
+            ESP_LOGD("main", "Value updated to %s", x.c_str());
+
+        - delay: 2s 
+        - if:
+            condition:
+              lambda: 'return id(last_selected_interval) != 0;'
+            then:
+              - lambda: |-
+                  int interval_ms = std::stoi(id(modbus_interval_select).state) * 1000;
+                  ESP_LOGD("main", "Selected interval: %d", interval_ms);
+                  id(growatt).set_update_interval(interval_ms);
+                  static bool first_change_after_restart = true;
+                  if (!first_change_after_restart) {
+                    delay(5000);
+                    ESP.restart();
+                  } else {
+                    first_change_after_restart = false;
+                  }
+                  
 sensor:
   # - platform: modbus_controller
   #   name: "${friendly_name} DcPower"
